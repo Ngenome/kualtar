@@ -1,0 +1,27 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.tail_th {
+  @apply text-white text-xs;
+}
+.tail_td {
+  @apply text-gray-200 text-xs;
+}
+.tail_td_xs {
+  @apply text-xs;
+}
+.caseSpans {
+  @apply text-blue-300 ml-1;
+}
+.caseWrap {
+  @apply md:w-auto;
+  width: 400px;
+}
+.loginInputs {
+  @apply rounded-sm h-10 bg-blue-900 m-1 w-60;
+}
+.labelWrapper {
+  @apply flex flex-col;
+}
