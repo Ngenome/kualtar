@@ -20,7 +20,7 @@
   width: 400px;
 }
 .loginInputs {
-  @apply rounded-sm h-10 bg-blue-900 m-1 w-60;
+  @apply rounded-sm h-10 bg-blue-900 m-1 w-60 text-purple-300;
 }
 .labelWrapper {
   @apply flex flex-col;

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { baseURL, ListStuff } from "../saintslist";
 import axios, { Axios } from "axios";
@@ -37,6 +36,7 @@ function LoginScreen(props) {
             <input type="password" className="loginInputs" id="password" />
           </div>
           <button
+            className="text-gray-200 bg-blue-800 rounded h-7 text-base p-1 text-center items-center"
             onClick={(e) => {
               e.preventDefault();
               axios
@@ -46,7 +46,7 @@ function LoginScreen(props) {
                 })
                 .then((e) => {
                   props.setToken(e.data.token);
-                  alert(e.data);
+                  // alert(e.data);
                   props.setter(true);
                 })
                 .catch((e) => {

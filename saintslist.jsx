@@ -9,7 +9,7 @@ export function ListStuff(props) {
   var condObj = {};
   var filterArray = [];
   let newFilterArray;
-  let flConds;
+  let flConds = [];
   var lsfilter = "residence";
 
   for (let zm = 0; zm < data.length; zm++) {
@@ -42,10 +42,10 @@ export function ListStuff(props) {
 
       // setConditions(conds);
     });
-    flConds.forEach((flcond) => {
+    flConds.map((flcond) => {
       condObj[flcond] = 0;
     });
-    conds.forEach((cond) => {
+    conds.map((cond) => {
       flConds.map((flcond) => {
         if (cond == flcond) {
           condObj[flcond]++;
@@ -56,7 +56,7 @@ export function ListStuff(props) {
   }
   if (props.item != "cases") {
     return (
-      <div className="h-screen w-screen bg-gray-900">
+      <div className="min-h-full min-w-full bg-gray-900">
         <h2 class="text-white font-sans text-xl">{props.item}</h2>
         <div className="hr h-px w-screen bg-red-200"></div>
         <div className="flex flex-row w-screen h-12 justify-between bg-blue-800">
@@ -147,31 +147,31 @@ export function ListStuff(props) {
     );
   }
 }
-const ImagesView = (props) => {
-  var viewings = props.images.map((e, i) => {
-    axios
-      .get(`${baseURL}gateoneimages/${e}/`)
-      .then((resp) => {
-        return <img src={resp.data.image} />;
-        console.log(viewings);
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  });
+// const ImagesView = (props) => {
+//   var viewings = props.images.map((e, i) => {
+//     axios
+//       .get(`${baseURL}gateoneimages/${e}/`)
+//       .then((resp) => {
+//         return <img src={resp.data.image} />;
+//         console.log(viewings);
+//       })
+//       .catch((err) => {
+//         alert(err);
+//       });
+//   });
 
-  return <div>{viewings}</div>;
-};
-function Fetch(props) {
-  var model = [];
-  props.data.forEach((element) => {
-    fetch(`http://localhost:8000/api/gateoneimages/${element}/`)
-      .then((res) => model.push(res.data.image))
-      .then((d) => {
-        console.log(d);
-      });
-  });
-  return model.map((e, i) => (
-    <img src="https://natashaskitchen.com/wp-content/uploads/2019/04/Best-Burger-5-768x1152.jpg" />
-  ));
-}
+//   return <div>{viewings}</div>;
+// };
+// function Fetch(props) {
+//   var model = [];
+//   props.data.forEach((element) => {
+//     fetch(`http://localhost:8000/api/gateoneimages/${element}/`)
+//       .then((res) => model.push(res.data.image))
+//       .then((d) => {
+//         console.log(d);
+//       });
+//   });
+//   return model.map((e, i) => (
+//     <img src="https://natashaskitchen.com/wp-content/uploads/2019/04/Best-Burger-5-768x1152.jpg" />
+//   ));
+// }
