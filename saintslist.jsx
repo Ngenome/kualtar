@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-export const baseURL = "http://localhost:8000/";
+export const baseURL = "https://kualtar.pythonanywhere.com/";
 export function ListStuff(props) {
   const [data, setData] = React.useState([]);
   const [arr, setArr] = React.useState([]);
