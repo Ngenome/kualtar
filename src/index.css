@@ -14,14 +14,29 @@
 }
 .caseSpans {
   @apply text-blue-300 ml-1;
+  @media screen and (max-width: 480px) {
+    font-size: 100%;
+  }
+}
+.lbls {
+  @apply text-purple-100;
 }
 .caseWrap {
   @apply md:w-auto;
-  width: 400px;
+  /* width: 400px;
+  @media screen and (max-width: 480px) {
+    width: 300px;
+  } */
 }
 .loginInputs {
-  @apply rounded-sm h-10 bg-blue-900 m-1 w-60 text-purple-300;
+  @apply rounded-md h-10 bg-indigo-900 m-1 w-60 text-purple-300 border-2 border-blue-500 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent;
 }
 .labelWrapper {
   @apply flex flex-col;
+}
+.mn-bd {
+  background: url(https://images.hivisasa.com/1200/uoyZ5v5v36IMG_20190223_101903.jpg);
+}
+.App {
+  background: linear-gradient(45deg, rgb(65, 1, 95), rgba(2, 2, 230, 0.788));
 }

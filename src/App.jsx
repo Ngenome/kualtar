@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { baseURL, ListStuff } from "../saintslist";
 import axios, { Axios } from "axios";
@@ -7,14 +7,38 @@ function App() {
   const [count, setCount] = useState(0);
   const [logged, setLogged] = useState(false);
   const [authToken, setAuthToken] = useState("");
+  const [ListValue, setListvalue] = useState("cases");
+  // var dirSl = useRef(null);
+  function dirNavigate() {
+    var dirSelect = document.querySelector("#dirs");
+    setListvalue(dirSelect.value);
+  }
+
   return (
-    <div className="App bg-gray-900 min-h-screen min-w-screen">
+    <div className="App min-h-screen w-screen">
       {logged == true ? (
-        <ListStuff
-          item="cases"
-          displayValues={["id", "name", "phone", "residence", "stability"]}
-          token={authToken}
-        />
+        <div className="mainwrap">
+          <select onInput={dirNavigate} name="dirs" id="dirs">
+            <option value="Saints">Saints</option>
+            <option value="Cases">Cases</option>
+            <option value="Fellowships">Fellowships</option>
+            <option value="Activities">Activities</option>
+            <option value="Lists">Lists</option>
+            <option value="Reports">Reports</option>
+          </select>
+          <ListStuff
+            item={ListValue}
+            displayValues={["id", "name", "phone", "residence", "stability"]}
+            token={authToken}
+          />
+          {/* <nav>
+            <ul id="saints-dir">Saints</ul> <ul id="cases-dir">Cases</ul>
+            <ul id="fellowships-dir">Fellowships</ul>
+            <ul id="activities-dir">Activities</ul>
+            <ul id="reports-dir">Reports</ul>
+            <ul id="lists-dir">checklists</ul>
+          </nav> */}
+        </div>
       ) : (
         <LoginScreen setter={setLogged} setToken={setAuthToken} />
       )}
@@ -24,15 +48,19 @@ function App() {
 function LoginScreen(props) {
   return (
     <div>
-      <h1 className="text-gray-200">Login</h1>
-      <div className="forms">
+      <h1 className="text-gray-200 text-2xl font-bold ">Login</h1>
+      <div className="forms mt-5">
         <form className="flex flex-col items-center" action="">
           <div className="labelWrapper">
-            <label htmlFor="username">Username</label>
+            <label className="lbls" htmlFor="username">
+              Username
+            </label>
             <input type="text" id="username" className="loginInputs" />
           </div>
           <div className="labelWrapper">
-            <label htmlFor="username">Password</label>
+            <label className="lbls" htmlFor="username">
+              Password
+            </label>
             <input type="password" className="loginInputs" id="password" />
           </div>
           <button
@@ -46,6 +74,12 @@ function LoginScreen(props) {
                 })
                 .then((e) => {
                   props.setToken(e.data.token);
+                  if (typeof Storage !== "undefined") {
+                    localStorage.setItem("kualtarAuthToken", e.data.token);
+                    console.log(e.data.token);
+                  } else {
+                    alert("sorry Local storage is not supported on your phone");
+                  }
                   // alert(e.data);
                   props.setter(true);
                 })

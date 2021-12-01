@@ -5,12 +5,13 @@ export function ListStuff(props) {
   const [data, setData] = React.useState([]);
   const [arr, setArr] = React.useState([]);
   const [conditions, setConditions] = useState([]);
+  const [viewData, setViewData] = useState(data);
   var conds = [];
   var condObj = {};
   var filterArray = [];
   let newFilterArray;
   let flConds = [];
-  var lsfilter = "residence";
+  const [lsfilter, setlsFilter] = useState("");
 
   for (let zm = 0; zm < data.length; zm++) {
     filterArray.push(data[zm][lsfilter]);
@@ -34,8 +35,12 @@ export function ListStuff(props) {
       console.log(resp.data);
       setArr(Object.values(resp.data[0]));
     });
-  }, []);
-  if (props.item == "cases") {
+  }, [props.item]);
+  function ExcecuteFilter() {
+    var filteropts = document.querySelector("#filteropts");
+    setlsFilter(filteropts.value);
+  }
+  if (item_query == "cases") {
     data.forEach((value) => {
       conds.push(value.condition);
       flConds = [...new Set(conds)];
@@ -54,15 +59,20 @@ export function ListStuff(props) {
     });
     console.log(condObj);
   }
-  if (props.item != "cases") {
+  if (item_query != "cases") {
     return (
-      <div className="min-h-full min-w-full bg-gray-900">
+      <div className="">
         <h2 class="text-white font-sans text-xl">{props.item}</h2>
         <div className="hr h-px w-screen bg-red-200"></div>
         <div className="flex flex-row w-screen h-12 justify-between bg-blue-800">
           <div className="wrap flex flex-row">
             <label htmlFor="filter">Filter by</label>
-            <select name="filter" id="filter" class="h-8 bg-blue-600 rounded">
+            <select
+              onInput={ExcecuteFilter}
+              name="filter"
+              id="filteropts"
+              class="h-8 bg-blue-600 rounded"
+            >
               {props.displayValues.map((e, i) => {
                 return <option value={e}>{e}</option>;
               })}
@@ -103,17 +113,17 @@ export function ListStuff(props) {
     );
   } else {
     return (
-      <div className="flex h-screen w-screen bg-gray-900 flex-col items-center ">
-        <h1 className="text-purple-400">Gate One Cases</h1>
+      <div className="flex min-h-screen w-screen  flex-col items-center ">
+        <h1 className="text-purple-200">Gate One Cases</h1>
         <div className="rowWrappper flex flex-row flex-wrap justify-center">
           {data.map((cc, i) => {
             conds.push(cc.condition);
             var tc = conds;
             return (
-              <div className="caseWrap h-40 bg-indigo-900 mb-0.5 flex flex-row justify-between">
+              <div className="caseWrap bg-indigo-900 mb-0.5 flex flex-row justify-between rounded-lg">
                 <div
                   id="caseView"
-                  className="flex flex-nowrap flex-col justify-start items-start "
+                  className="flex flex-nowrap flex-col justify-start items-start w-36"
                 >
                   <span className="caseSpans">{cc.name}</span>
                   <span className="caseSpans">{cc.condition}</span>
@@ -124,7 +134,7 @@ export function ListStuff(props) {
                 <div id="caseImages flex">
                   <a href={cc.image}>
                     <img
-                      className=" h-40 w-64 object-contain rounded-md"
+                      className=" h-40 w-64  sm:w-56 sm:h-32 object-contain rounded-md"
                       src={cc.image}
                     />
                   </a>
@@ -133,7 +143,7 @@ export function ListStuff(props) {
             );
           })}
         </div>
-        <div className="stats flex flex-col  text-gray-400">
+        <div className="stats flex flex-col  text-blue-400">
           <span>Total Cases: {data.length}</span>
           {flConds.map((flc, flci) => {
             return (
