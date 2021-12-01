@@ -1,11 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Editor, EditorState } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import ReactDOM from "react-dom";
+
 export const baseURL = "https://kualtar.pythonanywhere.com/";
 export function ListStuff(props) {
   const [data, setData] = React.useState([]);
   const [arr, setArr] = React.useState([]);
   const [conditions, setConditions] = useState([]);
   const [viewData, setViewData] = useState(data);
+  var previewData = [];
   var conds = [];
   var condObj = {};
   var filterArray = [];
@@ -32,16 +37,29 @@ export function ListStuff(props) {
       },
     }).then((resp) => {
       setData(resp.data);
+      setViewData(resp.data);
       console.log(resp.data);
-      setArr(Object.values(resp.data[0]));
+      if (resp.data != null && resp.data != undefined) {
+        // setArr(Object.values(data[0]));
+      }
     });
   }, [props.item]);
   function ExcecuteFilter() {
+    var filter_value_options = document.querySelector("#filter_value_options");
+
     var filteropts = document.querySelector("#filteropts");
+
     setlsFilter(filteropts.value);
+    data.forEach((item) => {
+      if (item["lsfilter"] == filter_value_options.value) {
+        previewData.push(item);
+        console.log(previewData);
+      }
+    });
+    setViewData(previewData);
   }
   if (item_query == "cases") {
-    data.forEach((value) => {
+    viewData.forEach((value) => {
       conds.push(value.condition);
       flConds = [...new Set(conds)];
 
@@ -59,7 +77,16 @@ export function ListStuff(props) {
     });
     console.log(condObj);
   }
-  if (item_query != "cases") {
+  if (item_query == "reports") {
+    return (
+      <Editor
+        toolbarClassName="toolbarClassName"
+        wrapperClassName="wrapperClassName"
+        editorClassName="editorClassName"
+      />
+    );
+  }
+  if (item_query != "cases" && item_query != "reports") {
     return (
       <div className="">
         <h2 class="text-white font-sans text-xl">{props.item}</h2>
@@ -80,7 +107,11 @@ export function ListStuff(props) {
           </div>
           <div className="wrap flex flex-row">
             <label htmlFor="filter_value">Value</label>
-            <select name="filter_value_options" id="filter_value_options">
+            <select
+              onInput={ExcecuteFilter}
+              name="filter_value_options"
+              id="filter_value_options"
+            >
               {newFilterArray != undefined ? (
                 newFilterArray.map((k, ei) => {
                   return <option>{k}</option>;
@@ -98,7 +129,7 @@ export function ListStuff(props) {
                 return <th>{e}</th>;
               })}
             </tr>
-            {data.map((e, i) => {
+            {viewData.map((e, i) => {
               return (
                 <tr>
                   {props.displayValues.map((ek, index) => (
